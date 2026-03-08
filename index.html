@@ -20,12 +20,12 @@
 
 <style>
 
-:root {
+:root{
 --gold:#d4af37;
 }
 
 body{
-background:#050505;
+background-color:#050505;
 color:#f8f8f8;
 font-family:'Montserrat',sans-serif;
 overflow-x:hidden;
@@ -70,7 +70,9 @@ background-position:center;
 opacity:0;
 transform:translateY(40px);
 filter:blur(8px);
-transition:opacity 1.5s cubic-bezier(0.22,1,0.36,1),transform 1.5s cubic-bezier(0.22,1,0.36,1),filter 1.5s cubic-bezier(0.22,1,0.36,1);
+transition:opacity 1.5s cubic-bezier(0.22,1,0.36,1),
+transform 1.5s cubic-bezier(0.22,1,0.36,1),
+filter 1.5s cubic-bezier(0.22,1,0.36,1);
 }
 
 .reveal.active{
@@ -99,6 +101,7 @@ letter-spacing:.5em;
 
 <body class="antialiased selection:bg-yellow-600 selection:text-white">
 
+<!-- HERO -->
 <section class="relative h-screen flex flex-col justify-center items-center text-center px-4 bg-hero">
 
 <div class="z-10 reveal active">
@@ -123,48 +126,191 @@ This is the journey of a voice that defined a generation.
 </p>
 
 </div>
-</div>
-
-<div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-50">
-
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-
-</svg>
 
 </div>
+
 </section>
 
+<!-- BEGINNING -->
+<section class="py-32 px-6 md:px-20 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
 
-<section id="trailer" class="py-32 bg-black text-center border-t border-neutral-900 px-6">
+<div class="w-full md:w-1/2 reveal">
+
+<h3 class="text-sm uppercase letter-spacing-wide text-accent mb-4">
+Chapter 01
+</h3>
+
+<h2 class="text-4xl md:text-6xl font-bold mb-8">
+THE BEGINNING
+</h2>
+
+<p class="text-gray-400 leading-relaxed text-lg">
+Long before the roaring stadiums and global fame, there was only ambition.
+A guitar, a dream, and a relentless pursuit to be heard.
+</p>
+
+</div>
+
+<div class="w-full md:w-1/2 h-[500px] overflow-hidden reveal reveal-delay">
+
+<img src="https://image.pollinations.ai/prompt/dark%20cinematic%20guitar%20stage%20light%20dramatic%20moody%20concert?width=1920&height=1080&nologo=true" class="object-cover w-full h-full opacity-70">
+
+</div>
+
+</section>
+
+<!-- RISE -->
+<section class="py-32 bg-stage text-center px-4">
+
+<div class="max-w-4xl mx-auto reveal">
+
+<h3 class="text-sm uppercase letter-spacing-wide text-accent mb-4">
+Chapter 02
+</h3>
+
+<h2 class="text-5xl md:text-7xl font-bold mb-10">
+THE RISE
+</h2>
+
+<p class="text-xl md:text-2xl font-light text-gray-200 leading-relaxed mb-8">
+The early 2000s marked a tectonic shift in Arabic music. Tamer emerged not just as a singer, but as a phenomenon.
+</p>
+
+</div>
+
+</section>
+
+<!-- CONNECTION -->
+<section class="py-32 px-6 md:px-20 max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-16">
+
+<div class="w-full md:w-1/2 h-[600px] overflow-hidden reveal">
+
+<img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?q=80&w=2070&auto=format&fit=crop" class="object-cover w-full h-full opacity-60">
+
+</div>
+
+<div class="w-full md:w-1/2 reveal reveal-delay">
+
+<h2 class="text-4xl md:text-6xl font-bold mb-8">
+THE CONNECTION
+</h2>
+
+<p class="text-gray-400 leading-relaxed text-lg">
+His relationship with fans turned concerts into emotional journeys.
+Millions of listeners found their own stories in his music.
+</p>
+
+</div>
+
+</section>
+
+<!-- CINEMA -->
+<section class="py-32 bg-cinema text-white text-center">
+
+<div class="max-w-4xl mx-auto reveal">
+
+<h2 class="text-4xl md:text-6xl font-bold mb-8">
+CINEMA & ENTERTAINMENT
+</h2>
+
+<p class="text-gray-300 text-lg">
+Beyond music, Tamer Hosny expanded into cinema, directing,
+writing and producing films that resonated with audiences
+across the Arab world.
+</p>
+
+</div>
+
+</section>
+
+<!-- CULTURAL IMPACT -->
+<section class="py-32 px-6 md:px-20 max-w-7xl mx-auto text-center">
+
+<div class="reveal">
+
+<h2 class="text-4xl md:text-6xl font-bold mb-12">
+CULTURAL IMPACT
+</h2>
+
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+
+<div class="reveal border border-neutral-800 p-6">
+<h4 class="text-2xl font-serif italic mb-4">Fashion</h4>
+<p class="text-gray-400">Influencing youth culture and fashion trends across the Arab world.</p>
+</div>
+
+<div class="reveal reveal-delay border border-neutral-800 p-6">
+<h4 class="text-2xl font-serif italic mb-4">Language</h4>
+<p class="text-gray-400">Lyrics and dialogues that became part of everyday culture.</p>
+</div>
+
+<div class="reveal reveal-delay-2 border border-neutral-800 p-6">
+<h4 class="text-2xl font-serif italic mb-4">Production</h4>
+<p class="text-gray-400">Elevating music videos with cinematic storytelling.</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- LEGACY -->
+<section class="py-40 bg-black text-center">
+
+<div class="max-w-4xl mx-auto reveal">
+
+<h2 class="text-5xl md:text-8xl font-bold mb-10">
+THE LEGACY
+</h2>
+
+<p class="text-3xl italic font-light text-gray-200">
+"Not just a star of a generation, but the architect of an era."
+</p>
+
+</div>
+
+</section>
+
+<!-- AI TRIBUTE -->
+<section class="py-24 bg-neutral-950 text-center">
+
+<div class="max-w-3xl mx-auto reveal">
+
+<h2 class="text-4xl font-bold mb-6">
+AI Tribute
+</h2>
+
+<p class="text-gray-400">
+This experience was created using artificial intelligence
+as a tribute to one of the most influential artists in the Arab world.
+</p>
+
+</div>
+
+</section>
+
+<!-- TRAILER -->
+<section class="py-32 bg-black text-center px-6">
 
 <div class="max-w-5xl mx-auto reveal">
 
-<h3 class="text-sm uppercase letter-spacing-wide text-accent mb-4">
-Visual Retrospective
-</h3>
-
-<h2 class="text-4xl md:text-6xl font-bold mb-8 text-white tracking-wide">
+<h2 class="text-4xl md:text-6xl font-bold mb-12">
 CINEMATIC TRAILER
 </h2>
 
-<p class="text-lg md:text-xl font-light text-gray-400 leading-relaxed mb-16 max-w-2xl mx-auto">
-A short cinematic tribute capturing the journey, emotion, and legacy of Tamer Hosny.
-</p>
+<a href="https://www.youtube.com/watch?v=7_zJak1mXss" target="_blank"
+class="block relative w-full aspect-video bg-neutral-900 border border-neutral-800 overflow-hidden group">
 
-<a href="https://www.youtube.com/watch?v=7_zJak1mXss" target="_blank" class="block relative w-full aspect-video bg-neutral-900 border border-neutral-800 rounded-md shadow-[0_20px_50px_rgba(0,0,0,0.9)] overflow-hidden group hover:border-neutral-600 hover:shadow-[0_0_60px_rgba(212,175,55,0.2)] transition duration-1000 cursor-pointer">
+<img src="https://img.youtube.com/vi/7_zJak1mXss/maxresdefault.jpg"
+class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-700">
 
-<img src="https://img.youtube.com/vi/7_zJak1mXss/maxresdefault.jpg" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 group-hover:opacity-80 transition duration-1000 mix-blend-luminosity">
+<div class="absolute inset-0 flex items-center justify-center">
 
-<div class="absolute inset-0 flex flex-col items-center justify-center">
+<div class="w-24 h-24 rounded-full bg-black/60 flex items-center justify-center">
 
-<div class="w-24 h-24 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20">
-
-<svg class="w-12 h-12 text-white ml-2" fill="currentColor" viewBox="0 0 24 24">
-
-<path d="M8 5v14l11-7z"></path>
-
+<svg class="w-12 h-12 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+<path d="M8 5v14l11-7z"/>
 </svg>
 
 </div>
@@ -174,31 +320,19 @@ A short cinematic tribute capturing the journey, emotion, and legacy of Tamer Ho
 </a>
 
 </div>
+
 </section>
 
+<!-- FINAL QUOTE -->
+<section class="py-32 bg-black text-center">
 
-<section class="py-32 bg-black text-center flex flex-col items-center justify-center min-h-[50vh] px-6">
-
-<div class="reveal">
-
-<h2 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white italic font-serif leading-snug">
-
+<h2 class="text-4xl md:text-6xl italic font-serif text-white">
 “Some artists make music.<br>
-
-<span class="text-accent mt-4 block">
-Others create a generation.
+<span class="text-yellow-500">Others create a generation.</span>
 </span>
-
 </h2>
 
-<p class="text-sm uppercase tracking-widest text-neutral-500 mt-16 font-sans">
-A tribute created with AI.
-</p>
-
-</div>
-
 </section>
-
 
 <script>
 
@@ -206,31 +340,19 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 const reveals=document.querySelectorAll(".reveal")
 
-const revealOnScroll=new IntersectionObserver((entries,observer)=>{
+const observer=new IntersectionObserver(entries=>{
 
 entries.forEach(entry=>{
 
 if(entry.isIntersecting){
-
 entry.target.classList.add("active")
-
-observer.unobserve(entry.target)
-
 }
 
 })
 
 },{threshold:0.1})
 
-reveals.forEach(reveal=>{
-
-if(!reveal.classList.contains('active')){
-
-revealOnScroll.observe(reveal)
-
-}
-
-})
+reveals.forEach(r=>observer.observe(r))
 
 })
 
