@@ -1,362 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>TAMER HOSNY | The Journey of a Generation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-soft: rgba(201, 162, 39, 0.15);
+            --gold-glow: rgba(201, 162, 39, 0.25);
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: #030303;
+            color: #f5f5f5;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .font-serif { font-family: 'Cormorant Garamond', serif; }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        /* Film grain overlay */
+        .grain {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
 
-<title>Tamer Hosny — AI Documentary Experience | The Journey of a Generation</title>
+        /* Vignette */
+        .vignette {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9998;
+            background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.4) 100%);
+        }
 
-<meta name="description" content="A cinematic AI tribute exploring the journey, influence, and legacy of Tamer Hosny.">
+        /* Section backgrounds with parallax */
+        .bg-hero {
+            background-image: linear-gradient(180deg, rgba(3,3,3,0.2) 0%, rgba(3,3,3,0.6) 50%, rgba(3,3,3,0.95) 100%),
+                url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=2070&auto=format&fit=crop');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+        .bg-stage {
+            background-image: linear-gradient(180deg, rgba(3,3,3,0.75) 0%, rgba(3,3,3,0.95) 100%),
+                url('https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=2070&auto=format&fit=crop');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+        .bg-cinema {
+            background-image: linear-gradient(180deg, rgba(3,3,3,0.85) 0%, rgba(3,3,3,1) 100%),
+                url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
 
-<meta property="og:title" content="Tamer Hosny — AI Documentary Experience">
-<meta property="og:description" content="A cinematic AI tribute exploring the journey and legacy of Tamer Hosny.">
-<meta property="og:image" content="https://img.youtube.com/vi/7_zJak1mXss/maxresdefault.jpg">
-<meta property="og:type" content="website">
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-blur {
+            opacity: 0;
+            transform: translateY(24px);
+            filter: blur(6px);
+            transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal-blur.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.15s; }
+        .reveal-delay-2 { transition-delay: 0.3s; }
+        .reveal-delay-3 { transition-delay: 0.45s; }
+        .reveal-delay-4 { transition-delay: 0.6s; }
 
-<script src="https://cdn.tailwindcss.com"></script>
+        .text-accent { color: var(--gold); }
+        .tracking-cinema { letter-spacing: 0.25em; }
+        .tracking-cinema-wide { letter-spacing: 0.4em; }
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+        /* Hero motion */
+        .hero-line { opacity: 0; transform: translateY(20px); }
+        .hero-line.hero-visible { opacity: 1; transform: translateY(0); }
+        .hero-line-1 { transition: opacity 1s 0.2s ease-out, transform 1s 0.2s ease-out; }
+        .hero-line-2 { transition: opacity 1s 0.5s ease-out, transform 1s 0.5s ease-out; }
+        .hero-line-3 { transition: opacity 1s 0.8s ease-out, transform 1s 0.8s ease-out; }
+        .hero-line-4 { transition: opacity 1s 1.1s ease-out, transform 1s 1.1s ease-out; }
+        .hero-line-5 { transition: opacity 1.2s 1.4s ease-out, transform 1.2s 1.4s ease-out; }
 
-<style>
+        /* Scroll indicator */
+        .scroll-indicator {
+            animation: scroll-bounce 2.5s ease-in-out infinite;
+        }
+        @keyframes scroll-bounce {
+            0%, 100% { transform: translate(-50%, 0); opacity: 0.5; }
+            50% { transform: translate(-50%, 8px); opacity: 1; }
+        }
 
-:root{
---gold:#d4af37;
-}
+        /* Trailer container */
+        .trailer-container { position: relative; }
+        .trailer-poster { transition: opacity 0.6s ease; }
+        .trailer-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(12px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .trailer-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .trailer-modal-inner {
+            position: relative;
+            width: 90vw;
+            max-width: 1200px;
+            aspect-ratio: 16/9;
+        }
+        .trailer-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .trailer-modal-close:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.4);
+        }
 
-body{
-background-color:#050505;
-color:#f8f8f8;
-font-family:'Montserrat',sans-serif;
-overflow-x:hidden;
-animation:fadein 1.8s ease;
-}
-
-@keyframes fadein{
-from{opacity:0;transform:translateY(25px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-h1,h2,h3{
-font-family:'Playfair Display',serif;
-}
-
-html{
-scroll-behavior:smooth;
-}
-
-.bg-hero{
-background-image:linear-gradient(to bottom,rgba(5,5,5,0.3),rgba(5,5,5,1)),url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=2070&auto=format&fit=crop');
-background-attachment:fixed;
-background-size:cover;
-background-position:center;
-}
-
-.bg-stage{
-background-image:linear-gradient(to bottom,rgba(5,5,5,0.8),rgba(5,5,5,1)),url('https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=2070&auto=format&fit=crop');
-background-attachment:fixed;
-background-size:cover;
-background-position:center;
-}
-
-.bg-cinema{
-background-image:linear-gradient(to bottom,rgba(5,5,5,0.9),rgba(5,5,5,1)),url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop');
-background-attachment:fixed;
-background-size:cover;
-background-position:center;
-}
-
-.reveal{
-opacity:0;
-transform:translateY(40px);
-filter:blur(8px);
-transition:opacity 1.5s cubic-bezier(0.22,1,0.36,1),
-transform 1.5s cubic-bezier(0.22,1,0.36,1),
-filter 1.5s cubic-bezier(0.22,1,0.36,1);
-}
-
-.reveal.active{
-opacity:1;
-transform:translateY(0);
-filter:blur(0);
-}
-
-.reveal-delay{transition-delay:.3s;}
-.reveal-delay-2{transition-delay:.6s;}
-
-.text-accent{
-color:var(--gold);
-}
-
-.letter-spacing-wide{
-letter-spacing:.2em;
-}
-
-.letter-spacing-widest{
-letter-spacing:.5em;
-}
-
-</style>
+        /* Glow and depth */
+        .glow-gold { box-shadow: 0 0 60px var(--gold-glow); }
+        .section-border { border-color: rgba(255,255,255,0.06); }
+    </style>
 </head>
-
-<body class="antialiased selection:bg-yellow-600 selection:text-white">
-
-<!-- HERO -->
-<section class="relative h-screen flex flex-col justify-center items-center text-center px-4 bg-hero">
-
-<div class="z-10 reveal active">
-
-<p class="text-xs md:text-sm uppercase letter-spacing-widest text-gray-400 mb-6">
-A Cinematic Retrospective
-</p>
-
-<h1 class="text-5xl md:text-8xl font-bold tracking-tighter mb-4">
-TAMER HOSNY
-</h1>
-
-<h2 class="text-xl md:text-3xl font-light italic text-accent mb-12">
-The Journey of a Generation
-</h2>
-
-<div class="max-w-2xl mx-auto reveal active reveal-delay">
-
-<p class="text-lg md:text-xl font-light leading-relaxed text-gray-300">
-From the streets of Cairo to the hearts of millions.<br>
-This is the journey of a voice that defined a generation.
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- BEGINNING -->
-<section class="py-32 px-6 md:px-20 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
-
-<div class="w-full md:w-1/2 reveal">
-
-<h3 class="text-sm uppercase letter-spacing-wide text-accent mb-4">
-Chapter 01
-</h3>
-
-<h2 class="text-4xl md:text-6xl font-bold mb-8">
-THE BEGINNING
-</h2>
-
-<p class="text-gray-400 leading-relaxed text-lg">
-Long before the roaring stadiums and global fame, there was only ambition.
-A guitar, a dream, and a relentless pursuit to be heard.
-</p>
-
-</div>
-
-<div class="w-full md:w-1/2 h-[500px] overflow-hidden reveal reveal-delay">
-
-<img src="https://image.pollinations.ai/prompt/dark%20cinematic%20guitar%20stage%20light%20dramatic%20moody%20concert?width=1920&height=1080&nologo=true" class="object-cover w-full h-full opacity-70">
-
-</div>
-
-</section>
-
-<!-- RISE -->
-<section class="py-32 bg-stage text-center px-4">
-
-<div class="max-w-4xl mx-auto reveal">
-
-<h3 class="text-sm uppercase letter-spacing-wide text-accent mb-4">
-Chapter 02
-</h3>
-
-<h2 class="text-5xl md:text-7xl font-bold mb-10">
-THE RISE
-</h2>
-
-<p class="text-xl md:text-2xl font-light text-gray-200 leading-relaxed mb-8">
-The early 2000s marked a tectonic shift in Arabic music. Tamer emerged not just as a singer, but as a phenomenon.
-</p>
-
-</div>
-
-</section>
-
-<!-- CONNECTION -->
-<section class="py-32 px-6 md:px-20 max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-16">
-
-<div class="w-full md:w-1/2 h-[600px] overflow-hidden reveal">
-
-<img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?q=80&w=2070&auto=format&fit=crop" class="object-cover w-full h-full opacity-60">
-
-</div>
-
-<div class="w-full md:w-1/2 reveal reveal-delay">
-
-<h2 class="text-4xl md:text-6xl font-bold mb-8">
-THE CONNECTION
-</h2>
-
-<p class="text-gray-400 leading-relaxed text-lg">
-His relationship with fans turned concerts into emotional journeys.
-Millions of listeners found their own stories in his music.
-</p>
-
-</div>
-
-</section>
-
-<!-- CINEMA -->
-<section class="py-32 bg-cinema text-white text-center">
-
-<div class="max-w-4xl mx-auto reveal">
-
-<h2 class="text-4xl md:text-6xl font-bold mb-8">
-CINEMA & ENTERTAINMENT
-</h2>
-
-<p class="text-gray-300 text-lg">
-Beyond music, Tamer Hosny expanded into cinema, directing,
-writing and producing films that resonated with audiences
-across the Arab world.
-</p>
-
-</div>
-
-</section>
-
-<!-- CULTURAL IMPACT -->
-<section class="py-32 px-6 md:px-20 max-w-7xl mx-auto text-center">
-
-<div class="reveal">
-
-<h2 class="text-4xl md:text-6xl font-bold mb-12">
-CULTURAL IMPACT
-</h2>
-
-</div>
-
-<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-
-<div class="reveal border border-neutral-800 p-6">
-<h4 class="text-2xl font-serif italic mb-4">Fashion</h4>
-<p class="text-gray-400">Influencing youth culture and fashion trends across the Arab world.</p>
-</div>
-
-<div class="reveal reveal-delay border border-neutral-800 p-6">
-<h4 class="text-2xl font-serif italic mb-4">Language</h4>
-<p class="text-gray-400">Lyrics and dialogues that became part of everyday culture.</p>
-</div>
-
-<div class="reveal reveal-delay-2 border border-neutral-800 p-6">
-<h4 class="text-2xl font-serif italic mb-4">Production</h4>
-<p class="text-gray-400">Elevating music videos with cinematic storytelling.</p>
-</div>
-
-</div>
-
-</section>
-
-<!-- LEGACY -->
-<section class="py-40 bg-black text-center">
-
-<div class="max-w-4xl mx-auto reveal">
-
-<h2 class="text-5xl md:text-8xl font-bold mb-10">
-THE LEGACY
-</h2>
-
-<p class="text-3xl italic font-light text-gray-200">
-"Not just a star of a generation, but the architect of an era."
-</p>
-
-</div>
-
-</section>
-
-<!-- AI TRIBUTE -->
-<section class="py-24 bg-neutral-950 text-center">
-
-<div class="max-w-3xl mx-auto reveal">
-
-<h2 class="text-4xl font-bold mb-6">
-AI Tribute
-</h2>
-
-<p class="text-gray-400">
-This experience was created using artificial intelligence
-as a tribute to one of the most influential artists in the Arab world.
-</p>
-
-</div>
-
-</section>
-
-<!-- TRAILER -->
-<section class="py-32 bg-black text-center px-6">
-
-<div class="max-w-5xl mx-auto reveal">
-
-<h2 class="text-4xl md:text-6xl font-bold mb-12">
-CINEMATIC TRAILER
-</h2>
-
-<a href="https://www.youtube.com/watch?v=7_zJak1mXss" target="_blank"
-class="block relative w-full aspect-video bg-neutral-900 border border-neutral-800 overflow-hidden group">
-
-<img src="https://img.youtube.com/vi/7_zJak1mXss/maxresdefault.jpg"
-class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-700">
-
-<div class="absolute inset-0 flex items-center justify-center">
-
-<div class="w-24 h-24 rounded-full bg-black/60 flex items-center justify-center">
-
-<svg class="w-12 h-12 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-<path d="M8 5v14l11-7z"/>
-</svg>
-
-</div>
-
-</div>
-
-</a>
-
-</div>
-
-</section>
-
-<!-- FINAL QUOTE -->
-<section class="py-32 bg-black text-center">
-
-<h2 class="text-4xl md:text-6xl italic font-serif text-white">
-“Some artists make music.<br>
-<span class="text-yellow-500">Others create a generation.</span>
-</span>
-</h2>
-
-</section>
-
-<script>
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-const reveals=document.querySelectorAll(".reveal")
-
-const observer=new IntersectionObserver(entries=>{
-
-entries.forEach(entry=>{
-
-if(entry.isIntersecting){
-entry.target.classList.add("active")
-}
-
-})
-
-},{threshold:0.1})
-
-reveals.forEach(r=>observer.observe(r))
-
-})
-
-</script>
-
+<body class="antialiased selection:bg-amber-600/30 selection:text-white">
+
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <!-- HERO -->
+    <section class="relative min-h-screen flex flex-col justify-center items-center text-center px-6 py-24 bg-hero">
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <p class="hero-line hero-line-1 text-xs md:text-sm uppercase tracking-cinema-wide text-neutral-500 mb-8">A Cinematic Retrospective</p>
+            <h1 class="hero-line hero-line-2 text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-5 drop-shadow-2xl">TAMER HOSNY</h1>
+            <h2 class="hero-line hero-line-3 text-xl md:text-3xl lg:text-4xl font-light italic text-accent mb-14 font-serif">The Journey of a Generation</h2>
+            <div class="hero-line hero-line-4 max-w-2xl mx-auto">
+                <p class="text-base md:text-xl font-light leading-relaxed text-neutral-300">
+                    From the streets of Cairo to the hearts of millions.<br class="hidden sm:block">
+                    This is the journey of a voice that defined a generation.
+                </p>
+            </div>
+        </div>
+        <div class="hero-line hero-line-5 absolute bottom-12 left-1/2 scroll-indicator">
+            <svg class="w-6 h-6 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </section>
+
+    <!-- THE BEGINNING -->
+    <section class="py-24 md:py-36 px-6 md:px-16 lg:px-24 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-14 md:gap-20">
+        <div class="w-full md:w-1/2 reveal-blur">
+            <span class="text-xs uppercase tracking-cinema text-accent mb-4 block">Chapter 01</span>
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 font-serif">THE BEGINNING</h2>
+            <div class="space-y-6 text-neutral-400 font-light leading-relaxed text-base md:text-lg">
+                <p>Long before the roaring stadiums and the blinding flashbulbs, there was only a whisper in the heart of Cairo—a relentless, burning ambition.</p>
+                <p>Armed with nothing but a guitar and a voice that carried the weight of unspoken stories, he walked into the unforgiving shadows of the industry. He was not handed the keys to the kingdom; he forged them.</p>
+                <p>When the breakthrough finally arrived, it wasn't a mere stroke of luck—it was an awakening. He didn't just sing melodies; he became the raw, authentic soundtrack for a youth longing to be heard.</p>
+            </div>
+        </div>
+        <div class="w-full md:w-1/2 h-[420px] md:h-[500px] bg-neutral-900/80 rounded overflow-hidden reveal-blur reveal-delay-2 relative border border-white/5 shadow-2xl">
+            <img src="https://image.pollinations.ai/prompt/Dark%20atmospheric%20photo%20of%20a%20guitar%20under%20dramatic%20stage%20lighting%20symbolizing%20early%20creative%20journey%20cinematic%20emotional%20dark%20documentary%20style?width=1920&height=1080&nologo=true" alt="Cinematic guitar under stage lights" class="object-cover w-full h-full opacity-70 hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 border border-neutral-700/50 m-4 pointer-events-none rounded"></div>
+        </div>
+    </section>
+
+    <!-- THE RISE -->
+    <section class="py-24 md:py-36 bg-stage text-center px-6 md:px-16">
+        <div class="max-w-4xl mx-auto reveal">
+            <span class="text-xs uppercase tracking-cinema text-accent mb-4 block">Chapter 02</span>
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-10 font-serif">THE RISE</h2>
+            <p class="text-lg md:text-2xl font-light text-neutral-200 leading-relaxed mb-8 reveal reveal-delay-1">
+                The early 2000s marked a tectonic shift in Arabic music. Tamer emerged not just as a singer, but as a phenomenon.
+            </p>
+            <p class="text-base md:text-lg text-neutral-400 font-light leading-relaxed max-w-2xl mx-auto reveal reveal-delay-2">
+                With a string of record-breaking albums, he captured the pulse of a new era. His melodies blended traditional oriental warmth with modern, upbeat rhythms. He was soon crowned <span class="text-white italic font-serif">"Negm El Geel"</span> (Star of the Generation).
+            </p>
+        </div>
+    </section>
+
+    <!-- THE CONNECTION -->
+    <section class="py-24 md:py-36 px-6 md:px-16 lg:px-24 max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-14 md:gap-20">
+        <div class="w-full md:w-1/2 h-[400px] md:h-[560px] bg-neutral-900/80 rounded overflow-hidden reveal relative border border-white/5 shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?q=80&w=2070&auto=format&fit=crop" alt="Dramatic live concert crowd" class="object-cover w-full h-full opacity-60 hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 border border-neutral-700/50 m-4 pointer-events-none rounded"></div>
+        </div>
+        <div class="w-full md:w-1/2 reveal reveal-delay-2">
+            <span class="text-xs uppercase tracking-cinema text-accent mb-4 block">Chapter 03</span>
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 font-serif">THE CONNECTION</h2>
+            <div class="space-y-6 text-neutral-400 font-light leading-relaxed text-base md:text-lg">
+                <p>What truly sets Tamer Hosny apart is his unprecedented bond with his audience. He didn't just build a fanbase; he built a family.</p>
+                <p>His concerts are emotional journeys. He sings of love, heartbreak, triumph, and nostalgia. He speaks directly to the soul of his listeners, making millions feel intimately understood.</p>
+                <p>This deep emotional intelligence is the invisible thread that ties him to fans across continents, transcending borders and dialects.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CINEMA & ENTERTAINMENT -->
+    <section class="py-24 md:py-36 bg-cinema text-white relative border-y section-border">
+        <div class="max-w-7xl mx-auto px-6 md:px-16 lg:px-24">
+            <div class="max-w-3xl reveal">
+                <span class="text-xs uppercase tracking-cinema text-accent mb-4 block">Chapter 04</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 font-serif">CINEMA & ENTERTAINMENT</h2>
+                <div class="space-y-6 text-neutral-300 font-light leading-relaxed text-base md:text-lg">
+                    <p>A true polymath, his ambition refused to be confined to the recording studio. He transitioned to the silver screen with effortless charisma.</p>
+                    <p>From romantic comedies to dramatic thrillers, he dominated the box office. He didn't just act; he directed, produced, and wrote original stories, proving his status as a complete, multifaceted entertainer.</p>
+                    <p>His cinematic universe became an extension of his musical narrative, intertwining soundtracks and storylines that became instant classics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CULTURAL IMPACT -->
+    <section class="py-24 md:py-36 px-6 md:px-16 lg:px-24 max-w-7xl mx-auto text-center">
+        <div class="reveal">
+            <span class="text-xs uppercase tracking-cinema text-accent mb-4 block">Chapter 05</span>
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-14 font-serif">CULTURAL IMPACT</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+            <div class="reveal reveal-delay-1 p-8 border section-border rounded-sm hover:border-neutral-600 hover:shadow-[0_0_40px_var(--gold-soft)] transition-all duration-500 text-left">
+                <h4 class="text-xl md:text-2xl font-semibold mb-4 font-serif italic text-white">Fashion</h4>
+                <p class="text-neutral-400 font-light text-sm md:text-base leading-relaxed">He shaped the style of millions of young men across the Arab world, dictating trends from hairstyles to casual wear.</p>
+            </div>
+            <div class="reveal reveal-delay-2 p-8 border section-border rounded-sm hover:border-neutral-600 hover:shadow-[0_0_40px_var(--gold-soft)] transition-all duration-500 text-left">
+                <h4 class="text-xl md:text-2xl font-semibold mb-4 font-serif italic text-white">Language</h4>
+                <p class="text-neutral-400 font-light text-sm md:text-base leading-relaxed">His lyrics and movie dialogues seamlessly integrated into everyday street slang, becoming part of the modern cultural lexicon.</p>
+            </div>
+            <div class="reveal reveal-delay-3 p-8 border section-border rounded-sm hover:border-neutral-600 hover:shadow-[0_0_40px_var(--gold-soft)] transition-all duration-500 text-left">
+                <h4 class="text-xl md:text-2xl font-semibold mb-4 font-serif italic text-white">Production</h4>
+                <p class="text-neutral-400 font-light text-sm md:text-base leading-relaxed">He elevated Arabic music video production, introducing cinematic storytelling and high-tier choreography to the regional industry.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEGACY -->
+    <section class="py-28 md:py-40 bg-black text-center relative overflow-hidden border-t section-border">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,rgba(30,30,30,0.4),transparent_70%)] pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-6 relative z-10 reveal">
+            <span class="text-xs uppercase tracking-cinema text-accent mb-6 block">The Final Chapter</span>
+            <h2 class="text-4xl md:text-7xl lg:text-8xl font-bold text-white mb-10 tracking-tight font-serif">THE LEGACY</h2>
+            <p class="text-xl md:text-3xl lg:text-4xl font-light text-neutral-200 leading-snug mb-12 font-serif italic">
+                "Not just a star of a generation, but the architect of an era."
+            </p>
+            <p class="text-base md:text-lg text-neutral-400 font-light leading-relaxed max-w-2xl mx-auto">
+                Tamer Hosny's journey is a testament to resilience and evolution. He stands today not only as a record-breaking artist and actor but as an eternal icon of Arab pop culture. His legacy is written in the hearts of those who grew up to the soundtrack of his life.
+            </p>
+        </div>
+    </section>
+
+    <!-- AI TRIBUTE -->
+    <section class="py-20 md:py-28 bg-neutral-950 text-center border-t section-border px-6">
+        <div class="max-w-3xl mx-auto reveal">
+            <h2 class="text-3xl md:text-5xl font-bold text-white tracking-wide mb-8 font-serif">AI Tribute</h2>
+            <p class="text-base md:text-xl font-light text-neutral-400 leading-relaxed">
+                This experience was created using artificial intelligence as a tribute to one of the most influential artists in the Arab world.<br><br>
+                A cinematic reflection on a journey that continues to inspire millions.
+            </p>
+        </div>
+    </section>
+
+    <!-- CINEMATIC TRAILER -->
+    <section id="trailer" class="py-24 md:py-32 bg-black text-center border-t section-border px-6">
+        <div class="max-w-5xl mx-auto reveal">
+            <span class="text-xs uppercase tracking-cinema text-accent mb-4 block">Visual Retrospective</span>
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-serif tracking-wide">CINEMATIC TRAILER</h2>
+            <p class="text-base md:text-xl font-light text-neutral-400 leading-relaxed mb-12 md:mb-16 max-w-2xl mx-auto">
+                A short cinematic tribute capturing the journey, emotion, and legacy of Tamer Hosny.
+            </p>
+
+            <div class="trailer-container relative w-full aspect-video bg-neutral-900 border section-border rounded-md overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.6)]">
+                <video
+                    id="trailerVideo"
+                    class="absolute inset-0 w-full h-full object-cover"
+                    preload="metadata"
+                    poster="https://img.youtube.com/vi/7_zJak1mXss/maxresdefault.jpg"
+                >
+                    <source src="./trailer.mp4" type="video/mp4">
+                </video>
+
+                <button
+                    id="playButton"
+                    type="button"
+                    class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group bg-black/30 hover:bg-black/10 transition-colors duration-300"
+                >
+                    <div class="relative z-10 w-20 h-20 md:w-24 md:h-24 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center border border-white/30 group-hover:bg-amber-600/90 group-hover:border-amber-400/80 group-hover:shadow-[0_0_50px_var(--gold-glow)] transition-all duration-500">
+                        <svg class="w-10 h-10 md:w-12 md:h-12 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                        </svg>
+                    </div>
+                    <span class="relative z-10 mt-4 text-white/90 font-serif italic text-sm md:text-lg tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Watch the trailer
+                    </span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL QUOTE -->
+    <section class="py-24 md:py-32 bg-black text-center flex flex-col items-center justify-center min-h-[45vh] md:min-h-[50vh] px-6 border-t section-border">
+        <div class="reveal max-w-4xl">
+            <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white italic font-serif leading-snug">
+                "Some artists make music.<br>
+                <span class="text-accent mt-4 block">Others create a generation."</span>
+            </h2>
+            <p class="text-xs uppercase tracking-cinema-wide text-neutral-500 mt-14 font-sans">A tribute created with AI.</p>
+        </div>
+    </section>
+
+    <!-- DEDICATION -->
+    <section class="py-16 md:py-24 bg-black border-t section-border px-6">
+        <div class="max-w-2xl mx-auto text-center reveal">
+            <p class="text-xs uppercase tracking-cinema-wide text-neutral-500 mb-2">Created by</p>
+            <p class="text-xl md:text-2xl font-serif font-semibold text-white mb-1">Hamza Abbas</p>
+            <p class="text-sm md:text-base text-neutral-400 font-light mb-4">AI Experience Designer</p>
+            <a href="tel:01551190990" class="text-neutral-500 hover:text-accent transition-colors duration-300 text-sm md:text-base font-light">01551190990</a>
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            function initHero() {
+                var lines = document.querySelectorAll('.hero-line');
+                lines.forEach(function (el) { el.classList.add('hero-visible'); });
+            }
+
+            function initReveal() {
+                var reveals = document.querySelectorAll('.reveal, .reveal-blur');
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { root: null, threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+                reveals.forEach(function (el) {
+                    if (!el.classList.contains('active')) observer.observe(el);
+                });
+            }
+
+            function initTrailer() {
+                var video = document.getElementById('trailerVideo');
+                var overlay = document.getElementById('playButton');
+
+                if (!video || !overlay) return;
+
+                function hideOverlay() {
+                    overlay.classList.add('opacity-0', 'pointer-events-none');
+                }
+
+                function showOverlay() {
+                    overlay.classList.remove('opacity-0', 'pointer-events-none');
+                }
+
+                overlay.addEventListener('click', function () {
+                    var p = video.play();
+                    if (p && typeof p.catch === 'function') {
+                        p.catch(function () { showOverlay(); });
+                    }
+                    hideOverlay();
+                });
+
+                video.addEventListener('play', hideOverlay);
+
+                video.addEventListener('pause', function () {
+                    if (video.currentTime > 0 && !video.ended) {
+                        showOverlay();
+                    }
+                });
+
+                video.addEventListener('ended', showOverlay);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    initHero();
+                    initReveal();
+                    initTrailer();
+                });
+            } else {
+                initHero();
+                initReveal();
+                initTrailer();
+            }
+        })();
+    </script>
 </body>
 </html>
